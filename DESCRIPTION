@@ -1,11 +1,13 @@
 Package: CrossTabCluster
 Type: Package
-Title: What the Package Does (Title Case)
-Version: 0.1.0
+Title: Tools For Clsutering Cross Tables
+Version: 0.1.0.9000
 Author: Who wrote it
-Maintainer: The package maintainer <yourself@somewhere.net>
-Description: More about what it does (maybe more than one line)
-    Use four spaces when indenting paragraphs within the Description.
-License: What license is it under?
+Maintainer: Adam Czepielik <adam.czepielik@gmail.com>
+Description: Implements Ward's hierarchical clustering and k-means in version tailored specifically
+for contingency tables. Alongside clustering algortihms one can also find here functions to measure
+chi-sqaure distances which algorithms rely on as well as methods for checking solutions validity and
+choosing number of clusters.
+License: MIT + file LICENSE
 Encoding: UTF-8
 LazyData: true

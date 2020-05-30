@@ -9,7 +9,7 @@ israeli_survey <- as.table(
       117, 24, 70, 9, 7,
       42, 6, 20, 2, 0,
       48, 16, 104, 14, 9),
-    ncol = 5, byrow = FALSE
+    ncol = 5, byrow = TRUE
   )
 )
 
@@ -17,4 +17,4 @@ colnames(israeli_survey) <- c("EUAM", "IFEA", "ASAF", "IFAA", "IFI")
 rownames(israeli_survey) <- c("OTH", "POL", "MIL", "ECO", "ENR", "SAB", "MTO", "PER")
 
 
-usethis::use_data(israeli_survey)
+usethis::use_data(israeli_survey, overwrite = TRUE)
