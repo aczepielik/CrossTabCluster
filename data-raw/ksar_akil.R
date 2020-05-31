@@ -10,11 +10,11 @@ ksarakil <- as.table(
       24, 50, 80, 67, 30,
       52, 177, 344, 205, 75,
       21, 81, 138, 31, 22),
-    ncol = 5, byrow = FALSE
+    ncol = 5, byrow = TRUE
   )
 )
 
 rownames(ksarakil) <- 1:10
 colnames(ksarakil) <- c("Partially cortical", "Non cortical", "Flake blades", "Blades", "Bladelets")
 
-usethis::use_data(ksarakil)
+usethis::use_data(ksarakil, overwrite = TRUE)
