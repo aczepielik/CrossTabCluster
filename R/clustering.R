@@ -1,3 +1,17 @@
+sort_leaves <- function(merge, node) {
+  if (merge[node, 1] < 0 & merge[node, 2] < 0) {
+    c(merge[node, 1], merge[node, 2])
+  } else if (merge[node, 1] < 0 & merge[node, 2] > 0) {
+    c(sort_leaves(merge, merge[node, 2]), merge[node, 1])
+  } else if (merge[node, 1] > 0 & merge[node, 2] < 0) {
+    c(sort_leaves(merge, merge[node, 1]), merge[node, 2])
+  } else if (merge[node, 1] > merge[node, 2]) {
+    c(sort_leaves(merge, merge[node, 2]), sort_leaves(merge, merge[node, 1]))
+  } else {
+    c(sort_leaves(merge, merge[node, 1]), sort_leaves(merge, merge[node, 2]))
+  }
+}
+
 lance_williams_update <- function(distances, masses, merge){
   inter_merge <- distances[merge[1], merge[2]]
   next_label <- max(0L, max(as.integer(rownames(distances)))) + 1L
@@ -33,6 +47,18 @@ lance_williams_update <- function(distances, masses, merge){
   )
 }
 
+#' Hierarchical clustering of contingency tables
+#'
+#' Applies Ward's agglomerative clustering to the rows or columns of the contingecy table.
+#'
+#' @inheritParams chisq_distance
+#'
+#' @return object of class hclust.
+#' @export
+#'
+#' @examples
+#' hclust_table(ksarakil)
+#' hclust_table(israeli_survey, dimension = 2)
 hclust_table <- function(table, dimension = 1) {
   if (dimension != 1 & dimension != 2) {
     stop("Wrong value for 'dimension' argument. Can be either 1 for rows or 2 for columns")
@@ -74,7 +100,7 @@ hclust_table <- function(table, dimension = 1) {
     list(
       merge = merge,
       height = height,
-      order = seq_len(k),
+      order = -sort_leaves(merge, nrow(merge)),
       labels = attr(table, "dimnames")[[dimension]],
       method = "ward.D2",
       call = match.call(),

@@ -76,6 +76,23 @@ row_distance_W <- function(table, clusters) {
   })
 }
 
+#' Matrix of chi-square distances
+#'
+#' Calculates chi-square distances between selected rows or columns of the contingency table.
+#'
+#' @param table object of class "table".
+#' @param indices integer vector. Which rows or columns should the function calculate distances between.\
+#' Default is all the row or all the columns depending on what is chosen in the argument "dimension".
+#' @param dimension integer. Whether to calculate distances between rows (1) or columns (2). Default is 1.
+#'
+#' @return Matrix of size length(indices) x length(indices) containing chi-square distances between selected
+#' rows or columns.
+#'
+#' @export
+#'
+#' @examples
+#' data(ksarakil)
+#' chisq_distance(ksarakil)
 chisq_distance <- function(table, indices = seq_len(dim(table)[dimension]), dimension = 1) {
   profiles <- slice_table(table, indices, dimension)/apply(table, dimension, sum)
 
@@ -90,6 +107,24 @@ chisq_distance <- function(table, indices = seq_len(dim(table)[dimension]), dime
     matrix(rep(diag(sp), k), nrow = k, byrow = FALSE) - 2*sp
 }
 
+#' Matrix of Ward's distances between clusters
+#'
+#' Calculates chi-square distances between selected rows or columns of the contingency table.
+#'
+#' @inheritParams chisq_distance
+#' @param clusters list of integer vectors. Each vector should define a cluster
+#' by specifing row or column indices of its memebrs. Clusters must not overalap.
+#'
+#' @return Matrix of size length(clusters) x length(clusters) containing distances between selected clusters of
+#' rows or columns.
+#'
+#' @export
+#'
+#' @examples
+#' data(israeli_survey)
+#' cluster_distance(israeli_survey, as.list(seq_len(nrow(israeli_survey))), 1)
+#'
+#' cluster_distance(israeli_survey, list(1, 2, c(3, 5), c(4, 6, 7), 8), 1)
 cluster_distance <- function(table, clusters, dimension = 1) {
   if (!check_cluster_correctness(table, clusters, dimension)) {
     stop("Wrong cluster specification. Clusters overlap or indices or outside of table range")
@@ -114,6 +149,18 @@ cluster_distance <- function(table, clusters, dimension = 1) {
     ward_coeffs(row_masses)
 }
 
+#' Generalized distance between clusters
+#'
+#' @inheritParams cluster_distance
+#'
+#' @return double. Value of generalized distance between clusters
+#' @export
+#'
+#' @examples
+#' data(israeli_survey)
+#' generalized_distance(israeli_survey, as.list(seq_len(nrow(israeli_survey))), 1)
+#'
+#' generalized_distance(israeli_survey, list(1, 2, c(3, 5), c(4, 6, 7)), 1)
 generalized_distance <- function(table, clusters, dimension = 1) {
   if (!check_cluster_correctness(table, clusters, dimension)) {
     stop("Wrong cluster specification. Clusters overlap or indices or outside of table range")
