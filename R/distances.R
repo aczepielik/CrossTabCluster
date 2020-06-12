@@ -83,7 +83,7 @@ row_distance_W <- function(table, clusters) {
 #' @param table object of class "table".
 #' @param indices integer vector. Which rows or columns should the function calculate distances between.\
 #' Default is all the row or all the columns depending on what is chosen in the argument "dimension".
-#' @param dimension integer. Whether to calculate distances between rows (1) or columns (2). Default is 1.
+#' @param dimension integer. Whether to use rows (1) or columns (2). Default is 1.
 #'
 #' @return Matrix of size length(indices) x length(indices) containing chi-square distances between selected
 #' rows or columns.

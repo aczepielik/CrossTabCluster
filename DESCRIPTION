@@ -1,7 +1,7 @@
 Package: CrossTabCluster
 Type: Package
 Title: Tools For Clsutering Cross Tables
-Version: 0.1.0.9000
+Version: 0.1.0.9001
 Author: Adam Czepielik <adam.czepielik@gmail.com>
 Maintainer: Adam Czepielik <adam.czepielik@gmail.com>
 Description: Implements Ward's hierarchical clustering and k-means in version tailored specifically

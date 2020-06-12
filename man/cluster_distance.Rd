@@ -12,7 +12,7 @@ cluster_distance(table, clusters, dimension = 1)
 \item{clusters}{list of integer vectors. Each vector should define a cluster
 by specifing row or column indices of its memebrs. Clusters must not overalap.}
 
-\item{dimension}{integer. Whether to calculate distances between rows (1) or columns (2). Default is 1.}
+\item{dimension}{integer. Whether to use rows (1) or columns (2). Default is 1.}
 }
 \value{
 Matrix of size length(clusters) x length(clusters) containing distances between selected clusters of

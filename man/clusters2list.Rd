@@ -23,6 +23,6 @@ Turn clsuter membershiip vector either from kmeans or cutree into list of vector
 \examples{
 clusters2list(c(1, 1, 2, 3, 1, 2, 3))
 
-clusters <- kmeans_table(israeli_survey, dimesnion = 1, k = 4)
+clusters <- kmeans_table(israeli_survey, 1, k = 4)
 kmeans2list(clusters)
 }

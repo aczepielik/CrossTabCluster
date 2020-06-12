@@ -131,11 +131,27 @@ simplified_ca <- function(table, dimension = 1) {
   n <- diag(1/sqrt(rr)) %*% decomposition$u
   m <- diag(sqrt(cc)) %*% decomposition$v
   f <- n %*% diag(d)
-  g <- diag(d) %*% m
+  g <- diag(d) %*% t(m)
 
   list(f = f, n = n, g = g, n = n, m = m, d = d)
 }
 
+#' K-means on correspondence analysis
+#'
+#' Performs weighted k-means clustering on k-1 in fir k-1 principal coordinates (or all of them),
+#' obtained from correspondence analysis of contingency table.
+#'
+#' @inheritParams chisq_distance
+#' @param k integer. number of clusters
+#' @param ... arguments passed to kmeans.
+#'
+#' @return object of class k-means with additional information about clustewr membership of items
+#' classified in the contingecy table and about sum of squares in low-dimensional space used in clustering.
+#' @export
+#'
+#' @examples
+#' kmeans_table(ksarakil, 1, 5)
+#' kmeans_table(israeli_survey, 2, 2)
 kmeans_table <- function(table, dimension = 1, k, ...) {
   args <- list(...)
 
@@ -151,12 +167,12 @@ kmeans_table <- function(table, dimension = 1, k, ...) {
     table <- t(table)
   }
 
-  row_masses <- apply(table, dimension, sum)
+  row_masses <- rowSums(table)
   indices <- sort(rep(seq_len(nrow(table)), row_masses))
-  coordinates <- simplified_ca(table, dimension)$f
+  coordinates <- simplified_ca(table, 1)$f
   coordinates <- coordinates[indices, 1:min(c(ncol(coordinates) - 1, k-1))]
 
-  res <- do.call(kmeans, c(list(x = coordinates, centers = k), args))
+  res <- do.call(stats::kmeans, c(list(x = coordinates, centers = k), args))
 
   res$cluster.item <- res$cluster
   res$size.item <- res$size
@@ -169,7 +185,7 @@ kmeans_table <- function(table, dimension = 1, k, ...) {
   res$betweenss.reduced <- res$betweenss
 
   res$withinss <- do.call(c, row_within_ss(table, clusters2list(res$cluster)))
-  res$totss <- chisq.test(table, simulate.p.value = TRUE, B = 1)$statistic
+  res$totss <- stats::chisq.test(table, simulate.p.value = TRUE, B = 1)$statistic
   res$betweenss <- res$totss - sum(res$withinss)
 
   res

@@ -11,7 +11,7 @@
 #' @examples
 #' clusters2list(c(1, 1, 2, 3, 1, 2, 3))
 #'
-#' clusters <- kmeans_table(israeli_survey, dimesnion = 1, k = 4)
+#' clusters <- kmeans_table(israeli_survey, 1, k = 4)
 #' kmeans2list(clusters)
 clusters2list <- function(vec) {
   res <- as.list(unname(unclass(by(seq_along(vec), vec, c))))
@@ -25,6 +25,16 @@ kmeans2list <- function(kmeans_result) {
   clusters2list(kmeans_result$cluster)
 }
 
+#' Within-cluster sum of squares
+#'
+#' Calclulates sum of squared distances between row profiles and their cluster centroids
+#' @param table
+#' @param clusters
+#'
+#' @return
+#' @export
+#'
+#' @examples
 row_within_ss <- function(table, clusters) {
   n <- sum(table)
   cc <- colSums(table)/n

@@ -9,7 +9,7 @@ aic(table, dimension, clusters, scheme)
 \arguments{
 \item{table}{object of class "table".}
 
-\item{dimension}{integer. Whether to calculate distances between rows (1) or columns (2). Default is 1.}
+\item{dimension}{integer. Whether to use rows (1) or columns (2). Default is 1.}
 
 \item{clusters}{list of integer vectors. Each vector should define a cluster
 by specifing row or column indices of its memebrs. Clusters must not overalap.}
@@ -24,6 +24,6 @@ double. Value of AIC statisctic.
 See section 4.1 in thesis, for details
 }
 \examples{
-clusters <- clusters2list(cutree(hclust_table(ksarakil, 1)))
+clusters <- clusters2list(stats::cutree(hclust_table(ksarakil, 1), k = 3))
 aic(ksarakil, 1, clusters, "independent multinomial")
 }

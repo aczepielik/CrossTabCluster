@@ -9,7 +9,7 @@ gap_statistic(table, dimension, clusters, func, scheme, B = 500)
 \arguments{
 \item{table}{object of class "table".}
 
-\item{dimension}{integer. Whether to calculate distances between rows (1) or columns (2). Default is 1.}
+\item{dimension}{integer. Whether to use rows (1) or columns (2). Default is 1.}
 
 \item{clusters}{list of integer vectors. Each vector should define a cluster
 by specifing row or column indices of its memebrs. Clusters must not overalap.}
@@ -26,8 +26,4 @@ list with elements: gap - value of the statistic and s -sclaled standard deviati
 \description{
 Quantifies clustering quailty comparing it to siumulated clusters.
 See Section 4.1 of the thesis for further details.
-}
-\examples{
-clusters <- kmeans_table(israeli_survey, dimesnion = 1, k = 4)
-gap_statistic(israeli_survey, dimension = 1, kmeans2list(clusters), "kmeans", "multinomial", 100)
 }

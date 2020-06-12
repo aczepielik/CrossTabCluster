@@ -9,7 +9,10 @@ silhouette(table, dimension, clusters)
 \arguments{
 \item{table}{object of class "table".}
 
-\item{dimension}{integer. Whether to calculate distances between rows (1) or columns (2). Default is 1.}
+\item{dimension}{integer. Whether to use rows (1) or columns (2). Default is 1.}
+
+\item{clusters}{list of integer vectors. Each vector should define a cluster
+by specifing row or column indices of its memebrs. Clusters must not overalap.}
 }
 \value{
 list with two elements. First element is a list with silhouette scores for each profile didvided
@@ -19,6 +22,6 @@ into clutsers, second one is a weighted mean of those scores.
 Calculates silhouette scores for clustered profiles and mean score for the whole clustering result.
 }
 \examples{
-clusters <- clusters2list(cutree(hclust_table(ksarakil, 1)))
+clusters <- clusters2list(stats::cutree(hclust_table(ksarakil, 1), k = 4))
 silhouette(ksarakil, 1, clusters)
 }

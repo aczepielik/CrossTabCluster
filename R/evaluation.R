@@ -27,10 +27,6 @@ sample_hom_prod_mult_table <- function(rowssums, col_probs) {
 #' @param B integer. Number of sampled tables.
 #'
 #' @return list with elements: gap - value of the statistic and s -sclaled standard deviation
-#'
-#' @examples
-#' clusters <- kmeans_table(israeli_survey, dimesnion = 1, k = 4)
-#' gap_statistic(israeli_survey, dimension = 1, kmeans2list(clusters), "kmeans", "multinomial", 100)
 gap_statistic <- function(table, dimension, clusters, func, scheme, B = 500) {
   if (dimension != 1 & dimension != 2) {
     stop("Wrong value for 'dimension' argument. Can be either 1 for rows or 2 for columns")
@@ -74,7 +70,7 @@ gap_statistic <- function(table, dimension, clusters, func, scheme, B = 500) {
         row_within_ss(
           tab,
           clusters2list(
-            cutree(hclust_table(tab, 1), k = length(clusters))
+            stats::cutree(hclust_table(tab, 1), k = length(clusters))
           )
         )
       ))}
@@ -82,7 +78,7 @@ gap_statistic <- function(table, dimension, clusters, func, scheme, B = 500) {
   }
 
   W <- sum(do.call(c,row_within_ss(table, clusters)))
-  list(gap = mean(log(Wmc)) - log(W), s = sqrt(1 + 1/B)*sd(log(Wmc)))
+  list(gap = mean(log(Wmc)) - log(W), s = sqrt(1 + 1/B)*stats::sd(log(Wmc)))
 }
 
 profile_distance_to_cluster <- function(distances, weights, profile_ind, cluster) {
@@ -108,13 +104,13 @@ s <- function(a, b) {
 #'
 #' Calculates silhouette scores for clustered profiles and mean score for the whole clustering result.
 #'
-#' @inheritParams chisq_distance
+#' @inheritParams cluster_distance
 #' @return list with two elements. First element is a list with silhouette scores for each profile didvided
 #' into clutsers, second one is a weighted mean of those scores.
 #' @export
 #'
 #' @examples
-#' clusters <- clusters2list(cutree(hclust_table(ksarakil, 1)))
+#' clusters <- clusters2list(stats::cutree(hclust_table(ksarakil, 1), k = 4))
 #' silhouette(ksarakil, 1, clusters)
 silhouette <- function(table, dimension, clusters) {
   if (dimension != 1 & dimension != 2) {
@@ -196,7 +192,7 @@ aic_prod_mult <- function(table, dimension, clusters) {
 #' @export
 #'
 #' @examples
-#' clusters <- clusters2list(cutree(hclust_table(ksarakil, 1)))
+#' clusters <- clusters2list(stats::cutree(hclust_table(ksarakil, 1), k = 3))
 #' aic(ksarakil, 1, clusters, "independent multinomial")
 aic <- function(table, dimension, clusters, scheme) {
   if (dimension != 1 & dimension != 2) {
