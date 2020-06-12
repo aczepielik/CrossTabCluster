@@ -13,7 +13,7 @@ chisq_distance(table, indices = seq_len(dim(table)[dimension]),
 \item{indices}{integer vector. Which rows or columns should the function calculate distances between.\
 Default is all the row or all the columns depending on what is chosen in the argument "dimension".}
 
-\item{dimension}{integer. Whether to calculate distances between rows (1) or columns (2). Default is 1.}
+\item{dimension}{integer. Whether to use rows (1) or columns (2). Default is 1.}
 }
 \value{
 Matrix of size length(indices) x length(indices) containing chi-square distances between selected

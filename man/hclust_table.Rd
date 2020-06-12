@@ -9,7 +9,7 @@ hclust_table(table, dimension = 1)
 \arguments{
 \item{table}{object of class "table".}
 
-\item{dimension}{integer. Whether to calculate distances between rows (1) or columns (2). Default is 1.}
+\item{dimension}{integer. Whether to use rows (1) or columns (2). Default is 1.}
 }
 \value{
 object of class hclust.

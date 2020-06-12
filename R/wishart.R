@@ -17,7 +17,7 @@
 #'
 #' @examples
 #' distance_bound(israeli_survey, options = list(samples = 1000, seed = 42))
-distance_bound <- function(table, alpha = 0.05, options = list(samples = 1000, seed = NULL)){
+distance_bound <- function(table, alpha = 0.05, options = list(samples = 1000, seed = 42)){
   a <- min(dim(table) - 1)
   b <- max(dim(table) - 1)
 

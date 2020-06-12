@@ -108,6 +108,85 @@ hclust_table <- function(table, dimension = 1) {
     class = "hclust")
 }
 
-kmeans_table <- function(table, dimension) {
-  NULL
+simplified_ca <- function(table, dimension = 1) {
+  if (dimension != 1 & dimension != 2) {
+    stop("Wrong dimension specification. Can be either 1 for rows or 2 for columns")
+  }
+
+  if (dimension == 2) {
+    table <- t(table)
+  }
+
+  N <- sum(table)
+
+  row_masses <- rowSums(table)
+
+  cc <- colSums(table)/N
+  rr <- row_masses/N
+
+  profiles <- table/row_masses
+  decomposition <- svd(diag(sqrt(rr)) %*% sweep(profiles, 2, cc) %*% diag(sqrt(1/cc)))
+
+  d <- decomposition$d
+  n <- diag(1/sqrt(rr)) %*% decomposition$u
+  m <- diag(sqrt(cc)) %*% decomposition$v
+  f <- n %*% diag(d)
+  g <- diag(d) %*% t(m)
+
+  list(f = f, n = n, g = g, n = n, m = m, d = d)
+}
+
+#' K-means on correspondence analysis
+#'
+#' Performs weighted k-means clustering on k-1 in fir k-1 principal coordinates (or all of them),
+#' obtained from correspondence analysis of contingency table.
+#'
+#' @inheritParams chisq_distance
+#' @param k integer. number of clusters
+#' @param ... arguments passed to kmeans.
+#'
+#' @return object of class k-means with additional information about clustewr membership of items
+#' classified in the contingecy table and about sum of squares in low-dimensional space used in clustering.
+#' @export
+#'
+#' @examples
+#' kmeans_table(ksarakil, 1, 5)
+#' kmeans_table(israeli_survey, 2, 2)
+kmeans_table <- function(table, dimension = 1, k, ...) {
+  args <- list(...)
+
+  if ("x" %in% names(args)) {
+    stop("Argument 'x' cannot be used as data is passed by kmeans_table itself")
+  }
+
+  if ("centers" %in% names(args)) {
+    stop("Argument 'centers'  cannot be used as it is passed by kmeans_table itself")
+  }
+
+  if (dimension == 2) {
+    table <- t(table)
+  }
+
+  row_masses <- rowSums(table)
+  indices <- sort(rep(seq_len(nrow(table)), row_masses))
+  coordinates <- simplified_ca(table, 1)$f
+  coordinates <- coordinates[indices, 1:min(c(ncol(coordinates) - 1, k-1))]
+
+  res <- do.call(stats::kmeans, c(list(x = coordinates, centers = k), args))
+
+  res$cluster.item <- res$cluster
+  res$size.item <- res$size
+
+  res$cluster <- as.integer(apply(table(indices, res$cluster), 1, which.max))
+  res$size <- as.integer(table(res$cluster))
+
+  res$totss.reduced <- res$totss
+  res$withinss.reduced <- res$withinss
+  res$betweenss.reduced <- res$betweenss
+
+  res$withinss <- do.call(c, row_within_ss(table, clusters2list(res$cluster)))
+  res$totss <- stats::chisq.test(table, simulate.p.value = TRUE, B = 1)$statistic
+  res$betweenss <- res$totss - sum(res$withinss)
+
+  res
 }

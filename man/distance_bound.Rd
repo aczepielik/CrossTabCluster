@@ -5,7 +5,7 @@
 \title{Upper bound for distance between clusters}
 \usage{
 distance_bound(table, alpha = 0.05, options = list(samples = 1000, seed
-  = NULL))
+  = 42))
 }
 \arguments{
 \item{table}{object of class table. The contingency table to calculate the upper bound for.}
