@@ -1,0 +1,11 @@
+citHeader("To cite CrossTabCluster in publications use:")
+
+citEntry(
+  entry    = "mastersthesis",
+  title    = "Clustering of Contingency Tables",
+  author   = "Czepielik Adam",
+  year     = "2020",
+  school   = "Jagiellonian University in Krakow",
+  url      = "https://github.com/aczepielik/CrossTabCluster",
+  textVersion = paste0("Czepielik Adam (2020), Clustering of Contingency Tables. Master's Thesis. Jagiellonian University in Krakow")
+)
